@@ -50,3 +50,4 @@ matIyer = np.delete(matIyer, (0,1), axis=1)
 
 distCho = getDistMat(matCho)
 distIyer = getDistMat(matIyer)
+
