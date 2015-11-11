@@ -29,11 +29,32 @@ def getDistMat(mat):
                 vector_b = mat[j,:]
                 distMat[i,j] = distance.euclidean(vector_a,vector_b)
                 # print distMat[i,j]
-    # for row in distMat:
-    #     value = str(row) + '\n'
-    #     file.write(value)
-    # file.close()
+    for row in distMat:
+        value = str(row) + '\n'
+        file.write(value)
+    file.close()
     return distMat
+
+def agglomerativeClustering(distMat):
+    hashMap = { }
+    dMat = distMat
+    ind_i = -1
+    ind_j = -1
+    least = sys.float_info.max
+    for i in range(len(distMat)):
+        for j in range(len(distMat[0])):
+            if i != j:
+                if distMat[i,j] < least:
+                    least = distMat[i,j]
+                    ind_i = i
+                    ind_j = j
+        #combine i and j into one cluster
+        # matD = np.delete(matD, j, axis=0)
+        print 'cluster formed',ind_i,ind_j
+        ind_i = -1
+        ind_j = -1
+        least = sys.float_info.max
+    return 0
 
 # pathInput = str(raw_input('Please Enter the path of the input txt file'))
 pathCho = '/Users/harshad/PycharmProjects/Project2/cho.txt'
@@ -49,5 +70,7 @@ matIyer = np.delete(matIyer, (0,1), axis=1)
 # printMat(matIyer)
 
 distCho = getDistMat(matCho)
-distIyer = getDistMat(matIyer)
+clusters = agglomerativeClustering(distCho)
 
+
+# distIyer = getDistMat(matIyer)
