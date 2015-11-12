@@ -1,6 +1,6 @@
-Hierarchical Agglomerative Clustering
+<h2>Hierarchical Agglomerative Clustering</h2>
 
-process script performs agglomerative clustering on the data mentioned below.
+<h3>process script performs agglomerative clustering on the data mentioned below.</h3>
 
 ----
  Data sets 
