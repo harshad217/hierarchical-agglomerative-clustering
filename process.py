@@ -125,7 +125,7 @@ def agglomerativeClustering(distMat,K):
     # print 'final results map', map
     return cl_list,map
 
-if __name__ == '__main__':
+def Main():
     # pathInput = str(raw_input('Please Enter the path of the input txt file'))
     pathCho = '/Users/harshad/PycharmProjects/Project2/cho.txt'
     pathIyer = '/Users/harshad/PycharmProjects/Project2/iyer.txt'
@@ -166,5 +166,7 @@ if __name__ == '__main__':
     for each in map:
         print 'for cluster',i,' ',each
         i = i + 1
-
     # clusters = agglomerativeClustering(distIyer)
+
+if __name__ == '__main__':
+    Main()
