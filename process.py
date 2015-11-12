@@ -1,5 +1,6 @@
 __author__ = 'harshad'
 
+import stats as st
 import numpy as np
 from scipy.spatial import distance
 from scipy.cluster.hierarchy import dendrogram, linkage
@@ -47,11 +48,10 @@ def agglomerativeClustering(distMat,K):
     cl_list = []
     map = [ ]
     for a in range(len(distMat)):
-        map.append([a])
+        map.append([a+1])
     for i in range(len(distMat)):
         cl_list.append([i])
 
-    print 'original list ',cl_list
     dMat = distMat
     ind_i = -1
     ind_j = -1
@@ -62,8 +62,6 @@ def agglomerativeClustering(distMat,K):
 
     while 1:
         if len(dMat) == K and len(dMat[0])==K:
-            print 'left dmat = ', dMat
-            print 'cl_list ',cl_list
             flag = True
             break
 
@@ -112,22 +110,21 @@ def agglomerativeClustering(distMat,K):
 
         #remove b and merge that cluster with a cluster
         b = cl_list.pop(ind_j)
-        print 'after removing merged cluster', cl_list
         a = cl_list[ind_i]
         temp = []
         temp.append(a)
         temp.append(b)
         cl_list[ind_i] = temp
+
         # org = map[ind_i]
         # to_add = map.pop(ind_j)
         # map[ind_i] = [org,to_add]
-        print 'after updating cl lsit', cl_list
+
     # print 'final results map', map
     return cl_list,map
 
 def Main():
-    pathInput = str(raw_input('Please Enter the path of the input txt file'))
-
+    # pathInput = str(raw_input('Please Enter the path of the input txt file'))
     pathCho = '/Users/harshad/PycharmProjects/Project2/cho.txt'
     pathIyer = '/Users/harshad/PycharmProjects/Project2/iyer.txt'
     matCho = loadData(pathCho)
@@ -135,14 +132,13 @@ def Main():
     matCho = np.delete(matCho, (0,1), axis=1)
     matIyer = np.delete(matIyer, (0,1), axis=1)
 
-    print len(matCho)
-    link_matrix = linkage(matCho,'single')
+    #***************  print graph script  ***************
+    # link_matrix = linkage(matCho,'single')
     # print 'linkage matrix- ',link_matrix
-
-    plt.figure(figsize=(20,8))
-    plt.title("Hierarchical Agglomerative Clustering")
-    dendrogram(link_matrix)
-    plt.show()
+    # plt.figure(figsize=(20,8))
+    # plt.title("Hierarchical Agglomerative Clustering")
+    # dendrogram(link_matrix)
+    # plt.show()
 
     # print 'matrix for cho.txt after removing ground truths'
     # printMat(matCho)
@@ -155,18 +151,29 @@ def Main():
     #     3 2 0
     # '''
     # cl_list = agglomerativeClustering(toyMat)
-
     distCho = getDistMat(matCho)
-    print distCho[298,0]
+    distIyer = getDistMat(matIyer)
+
     # clusters = agglomerativeClustering(distCho)
 
     toyMat = np.reshape( [0,1,2,2,3,1,0,2,4,3,2,2,0,1,5,2,4,1,0,3,3,3,5,3,0],(5,5))
 
-    cl,map = agglomerativeClustering(distCho,6)
+    cl,map = agglomerativeClustering(distCho,5)
     i=0
     for each in map:
         print 'for cluster',i,' ',each
         i = i + 1
+
+    C = st.calculateIncidenceMatrix(map,size=len(distCho))
+
+    fileC = open('C_Matrix.txt','w')
+    for row in C:
+        fileC.write(str(row)+'\n')
+    fileC.close()
+    print C
+
+    corr = st.calculateCorrelation(distCho,C)
+    print 'correlation = ', corr
     # clusters = agglomerativeClustering(distIyer)
 
 if __name__ == '__main__':
