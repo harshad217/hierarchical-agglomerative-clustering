@@ -126,7 +126,8 @@ def agglomerativeClustering(distMat,K):
     return cl_list,map
 
 def Main():
-    # pathInput = str(raw_input('Please Enter the path of the input txt file'))
+    pathInput = str(raw_input('Please Enter the path of the input txt file'))
+
     pathCho = '/Users/harshad/PycharmProjects/Project2/cho.txt'
     pathIyer = '/Users/harshad/PycharmProjects/Project2/iyer.txt'
     matCho = loadData(pathCho)
