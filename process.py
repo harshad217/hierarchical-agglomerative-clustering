@@ -1,6 +1,7 @@
 __author__ = 'harshad'
 
 import stats as st
+import columns
 import numpy as np
 from scipy.spatial import distance
 from scipy.cluster.hierarchy import dendrogram, linkage
@@ -18,7 +19,7 @@ def printMat(mat):
         for j in range(len(mat[0])):
             sys.stdout.write(str(mat[i][j])+' ')
         print ''
-    print '*********************************************************'
+    print '---'
 
 def loadData(path):
     file = open(name=str(path),mode='r')
@@ -76,15 +77,10 @@ def agglomerativeClustering(distMat,K):
                         ind_i = i
                         ind_j = j
                         least = dMat[i,j]
-        print least
-        print ind_i, ind_j
+        # print least
+        # print ind_i, ind_j
 
-        # in1 = ind_i
-        # in2 = ind_j
-        # ind_i = min(in1,in2)
-        # ind_j = max(in1,in2)
         ind_i,ind_j = getMinMax(ind_i,ind_j)
-
         temp1 = map[ind_i]
         temp2 = map[ind_j]
         temp3 = [ ]
@@ -93,16 +89,14 @@ def agglomerativeClustering(distMat,K):
         for each in temp2:
             temp3.append(each)
         map[ind_i] = temp3
-
-        # map[in1] = [map[in1],map[in2]]
-        u1 = map.pop(ind_j)
+        useless_variable = map.pop(ind_j)
 
         for k in range(len(dMat[0])):
              dMat[ind_i,k] = min(dMat[ind_i,k],dMat[ind_j,k])
         for k in range(len(dMat)):
              dMat[k,ind_i] = min(dMat[k,ind_i],dMat[k,ind_j])
 
-        print 'merging clusters ',ind_i,' & ', ind_j,' with value= ',least
+        # print 'merging clusters ',ind_i,' & ', ind_j,' with value= ',least
 
         #at ind_i index, we are storing the new distances of the newly formed cluster
         dMat = np.delete(dMat,ind_j,axis=0)
@@ -123,58 +117,57 @@ def agglomerativeClustering(distMat,K):
     # print 'final results map', map
     return cl_list,map
 
+def printClusters(map):
+    i=0
+    for each in map:
+        print 'for cluster',i+1,' ',each
+        i = i + 1
+
 def Main():
     # pathInput = str(raw_input('Please Enter the path of the input txt file'))
     pathCho = '/Users/harshad/PycharmProjects/Project2/cho.txt'
     pathIyer = '/Users/harshad/PycharmProjects/Project2/iyer.txt'
-    matCho = loadData(pathCho)
-    matIyer = loadData(pathIyer)
-    matCho = np.delete(matCho, (0,1), axis=1)
-    matIyer = np.delete(matIyer, (0,1), axis=1)
-
-    #***************  print graph script  ***************
-    # link_matrix = linkage(matCho,'single')
-    # print 'linkage matrix- ',link_matrix
-    # plt.figure(figsize=(20,8))
-    # plt.title("Hierarchical Agglomerative Clustering")
-    # dendrogram(link_matrix)
-    # plt.show()
-
-    # print 'matrix for cho.txt after removing ground truths'
-    # printMat(matCho)
-    # print 'matrix for iyer.txt after removing ground truths'
-    # printMat(matIyer)
-
-    # toyMat = np.reshape([0, 7, 3 ,7 ,0 ,2, 3, 2, 0],(3,3))
-    # ''' 0 7 3
-    #     7 0 2
-    #     3 2 0
-    # '''
-    # cl_list = agglomerativeClustering(toyMat)
-    distCho = getDistMat(matCho)
-    distIyer = getDistMat(matIyer)
-
-    # clusters = agglomerativeClustering(distCho)
-
     toyMat = np.reshape( [0,1,2,2,3,1,0,2,4,3,2,2,0,1,5,2,4,1,0,3,3,3,5,3,0],(5,5))
 
-    cl,map = agglomerativeClustering(distCho,5)
-    i=0
-    for each in map:
-        print 'for cluster',i,' ',each
-        i = i + 1
+    path = pathCho
+    k_value = 5
 
-    C = st.calculateIncidenceMatrix(map,size=len(distCho))
+    # matCho = loadData(pathCho)
+    # matIyer = loadData(pathIyer)
 
-    fileC = open('C_Matrix.txt','w')
-    for row in C:
-        fileC.write(str(row)+'\n')
-    fileC.close()
-    print C
+    mat = loadData(path)
 
-    corr = st.calculateCorrelation(distCho,C)
+    # distCho = getDistMat(matCho)
+    # distIyer = getDistMat(matIyer)
+
+    '''Get Groundtruths'''
+    groundTruths = columns.getGroundTruths(mat)
+    print 'ground truths are', groundTruths
+    '''End'''
+
+    mat = np.delete(mat, (0,1), axis=1)
+    distMat = getDistMat(mat)
+    cl,map = agglomerativeClustering(distMat,k_value)
+    printClusters(map)
+
+
+    '''Calculate external indexes'''
+    C = st.calculateIncidenceMatrix(map,size=len(distMat))
+    print 'C matrix = ', C
+    P = st.calculatePMatrix(groundTruths)
+    print 'P matrix = ', P
+    RAND, JACCARD = st.calculateExternalIndex(P,C)
+    print 'RAND & JACCARD indexes = ',RAND, JACCARD
+    '''End'''
+
+
+    '''Calculate internal indexes'''
+    corr = st.calculateCorrelation(distMat,C)
     print 'correlation = ', corr
+    r = st.calculateCorr(distMat,C)
+    print 'dot corr = ', r
     # clusters = agglomerativeClustering(distIyer)
+    '''End'''
 
 if __name__ == '__main__':
     Main()
