@@ -3,8 +3,8 @@
 <h3>The program performs Hierarchical Agglomerative Clustering on any dataset that is defined in the following format. Principle Component Analysis is also implemented to better visualize the 'm' dimensional datapoints (and the clusters) in two dimensional space.</h3>
 
 ---
-<h5>Dataset Format (Columns):</h5>
-#ID #Groundtruth #Attribute1 #Attribute2 ... #Attribute'N'
+<h4>Dataset Format (Columns):</h4>
+ID Groundtruth Attribute1 Attribute2 ... Attribute'M'
 
 Each row represent a datapoint.
 The first column is the point_id. 
