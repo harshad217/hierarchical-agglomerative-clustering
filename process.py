@@ -136,8 +136,8 @@ def drawDendrogram(distMat):
 def Main():
     toyMat = np.reshape( [0,1,2,2,3,1,0,2,4,3,2,2,0,1,5,2,4,1,0,3,3,3,5,3,0],(5,5))
     # pathInput = str(raw_input('Please Enter the path of the input txt file'))
-    pathCho = '/Users/harshad/PycharmProjects/Project2/cho.txt'
-    pathIyer = '/Users/harshad/PycharmProjects/Project2/iyer.txt'
+    pathCho = 'cho.txt'
+    pathIyer = 'iyer.txt'
     pathD2 = 'dataset1.txt'
 
     # path = pathIyer
