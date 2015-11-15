@@ -33,11 +33,11 @@ def calculateCorr(D,C):
     D = D - meanD
     C = C - meanC
     #get the dot product
-    numMat = np.dot(D,C)
+    numMat = np.multiply(D,C)
     numSum = np.sum(numMat)
 
-    denom1 = math.sqrt(np.sum(np.dot(D,D)))
-    denom2 = math.sqrt(np.sum(np.dot(C,C)))
+    denom1 = math.sqrt(np.sum(np.multiply(D,D)))
+    denom2 = math.sqrt(np.sum(np.multiply(C,C)))
 
     denom = denom1 * denom2
     r = numSum/denom
@@ -46,7 +46,7 @@ def calculateCorr(D,C):
 def calculateCorrelation(D, C):
     # flatMatA = np.ndarray.flatten(matA)
     # flatMatB = np.ndarray.flatten(matB)
-    # corr = np.correlate(flatMatA,flatMatB)
+    # corr = np.corrcoef(flatMatA,flatMatB)
     meanD = np.mean(D)
     meanC = np.mean(C)
     numerator = 0.0
@@ -84,10 +84,10 @@ def calculateExternalIndex(P,C):
                 DS = DS + 1
             elif P[i,j] == 0 and C[i,j] == 1:
                 SD = SD + 1
-    print 'SS = ',SS
-    print 'DD = ',DD
-    print 'SD = ',SD
-    print 'DS = ',DS
+    # print 'SS = ',SS
+    # print 'DD = ',DD
+    # print 'SD = ',SD
+    # print 'DS = ',DS
     RAND = float(SS + DD) / float( SS + SD + DS + DD )
     JACCARD = float(SS) / float(SS + SD + DS)
     return RAND,JACCARD
