@@ -1,6 +1,6 @@
 <h2>Hierarchical Agglomerative Clustering</h2>
 
-<h3>The program performs Hierarchical Agglomerative Clustering on any dataset that is defined in the following format. Principle Component Analysis is also implemented to better visualize the 'm' dimensional datapoints (and the clusters) in two dimensional space.</h3>
+<h4>The program performs Hierarchical Agglomerative Clustering on any dataset that is defined in the following format. Internal (Correlation) and External (Jaccard & RAND) Indexes are calculated to evaluate the accuracy. Principle Component Analysis is implemented to better visualize the 'M' dimensional datapoints (and the clusters) in two dimensional space.</h4>
 
 ---
 <h4>Dataset Format (Columns):</h4>
