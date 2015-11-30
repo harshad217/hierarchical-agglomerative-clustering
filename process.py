@@ -198,7 +198,7 @@ def Main():
     '''Draw Dendrogram'''
     if drawD == None:
         pass
-    if drawD==1:
+    elif drawD==1:
         drawDendrogram(mat)
     '''End'''
 
